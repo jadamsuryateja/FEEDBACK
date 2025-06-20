@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal</title>
+    <style>
+        /* Reset styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        /* Body styles */
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+
+        }
+
+        /* Typography styles */
+        h1 {
+            background: linear-gradient(to right, #FFB76B 11%, #FFA73D 41%, #FF7C00 20%, #FF7F04 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 2.5em;
+            max-width: 90%;
+            line-height: 1.2;
+        }
+
+        h2 {
+            color: #ffffff;
+            margin-bottom: 30px;
+            font-size: 28px;
+            text-align: center;
+            padding: 70px;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        h3 {
+            color: red;
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 1.8em;
+        }
+
+        /* Container styles */
+        .login-container {
+            position: relative;
+            max-width: 500px;
+            width: 100%;
+            min-height: 400px;
+            animation: fadeIn 0.5s ease-out;
+            background-color: #00000083;
+            backdrop-filter: blur(5px);         /* Apply blur effect */
+            -webkit-backdrop-filter: blur(5px); /* Safari support */
+            border-radius: 25px;
+            margin: 0 20px;
+            overflow: visible;
+            pointer-events: auto;
+            z-index: 1;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 4px;
+            border-radius: 12px;
+            background: linear-gradient(90deg, 
+                rgba(168, 85, 247, 0.8),
+                rgba(34, 197, 94, 0.8),
+                rgba(236, 72, 153, 0.8)
+            );
+            -webkit-mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: borderAnimation 3s linear infinite;
+        }
+
+        .inner-container {
+            position: relative;
+            background: rgb(0, 0, 0);
+            padding: 60px;
+            border-radius: 8px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        /* Updated Input Field Styles */
+        .input-field {
+            position: relative;
+            width: 70%;
+            padding: 15px 20px;
+            margin: 15px auto;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease-in-out;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0);
+            display: block;
+            pointer-events: auto;
+            user-select: auto;
+            z-index: 3;
+            color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-field:hover {
+            border-color: #2980b9;
+            background-color: #ffffff00;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #ff7300;
+            background-color: #ffffff00;
+            box-shadow: 0 0 0 3px rgba(255, 115, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .input-field::placeholder {
+            color: #ffffff;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .input-field:focus::placeholder {
+            opacity: 0.5;
+        }
+
+        .input-field:-webkit-autofill,
+        .input-field:-webkit-autofill:hover,
+        .input-field:-webkit-autofill:focus {
+            -webkit-text-fill-color: #2c3e50;
+            -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        /* Button styles */
+        button {
+            background-color: #ff7300;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: auto;
+            min-width: 200px;
+            max-width: 300px;
+            margin: 20px auto;
+            display: block;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #894c1a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transform: rotate(45deg);
+            transition: 0.5s;
+        }
+
+        button:hover::after {
+            left: 100%;
+        }
+
+        /* Loading spinner */
+        .loading {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin: 10px auto 0;
+        }
+
+        /* Animations */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes borderAnimation {
+            0% { background: linear-gradient(90deg, rgba(168, 85, 247, 0.8), rgba(34, 197, 94, 0.8), rgba(236, 72, 153, 0.8)); }
+            50% { background: linear-gradient(180deg, rgba(236, 72, 153, 0.8), rgba(168, 85, 247, 0.8), rgba(34, 197, 94, 0.8)); }
+            100% { background: linear-gradient(270deg, rgba(34, 197, 94, 0.8), rgba(236, 72, 153, 0.8), rgba(168, 85, 247, 0.8)); }
+        }
+
+        /* Responsive styles */
+        @media (max-width: 1024px) {
+            h1 { font-size: 2em; }
+            h2 { font-size: 24px; padding: 50px; }
+            h3 { font-size: 1.5em; }
+            .login-container { max-width: 400px; max-height: 400px; }
+            .inner-container { padding: 40px; }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 20px; padding: 30px; }
+            h3 { font-size: 1.3em; }
+            .login-container { max-width: 350px; max-height: 400px; }
+            .inner-container { padding: 30px; max-height: 400px; }
+            button { font-size: 14px; padding: 10px 20px; }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 1.5em; }
+            h2 { font-size: 18px; padding: 20px; }
+            h3 { font-size: 1.2em; }
+            .login-container { max-width: 300px; }
+            .inner-container { padding: 20px; }
+            button { font-size: 12px; padding: 8px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <h1>
+        NARASARAOPETA ENGINEERING COLLEGE
+    </h1>
+    <h3>(AUTONOMUS)</h3>
+    <div class="login-container">
+        <h2>WELCOME TO STUDENT FEEDBACK</h2>
+        <input type="text" class="input-field" id="linkTitleInput" placeholder="Enter Title">
+        <button onclick="openLinkByTitle(this)" style="opacity: 1;">CLICK HERE TO GIVE FEEDBACK</button>
+        <div class="loading" id="loadingSpinner" style="display: none;"></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
+    <script>
+        VANTA.WAVES({
+            el: "body", // Apply the animation to the body element
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0xd101d, // Adjust the color if needed
+            shininess: 150.00,
+            waveHeight: 40.00,
+            waveSpeed: 1.15,
+            zoom: 0.65
+        });
+
+        function openLinkByTitle(button) {
+            const title = document.getElementById('linkTitleInput').value;
+            const spinner = document.getElementById('loadingSpinner');
+            spinner.style.display = 'block';
+            button.style.opacity = '0.7';
+            button.disabled = true;
+
+            fetch(`http://192.168.95.97:3000/api/links?title=${encodeURIComponent(title)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.url) {
+                        window.open(data.url, '_blank'); // Open the link in a new tab
+                    } else {
+                        alert('No link available with that title.'); // No link found
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error accessing link');
+                })
+                .finally(() => {
+                    spinner.style.display = 'none';
+                    button.style.opacity = '1';
+                    button.disabled = false;
+                });
+        }
+    </script>
+</body>
+</html>

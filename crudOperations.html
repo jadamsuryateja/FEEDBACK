@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FEEDBACK PORTAL</title>
+    <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU6S6_O-nyrsDfvosOFqEbKjeTBReHLvOQGg&s" type="image/x-icon">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h3 {
+            text-align: center;
+            color: #333;
+        }
+        .filter-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .filter-section label, 
+        .filter-section select, 
+        .filter-section input, 
+        .filter-section button {
+            margin: 5px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+        }
+        .filter-section button {
+            background-color: #4356cd;
+            color: white;
+            cursor: pointer;
+        }
+        .filter-section button:hover {
+            background-color:#4356cd;
+        }
+        #feedbackResults {
+            width: 100%;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            font-size: 10px;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            font-size: 10px;
+        }
+        /* Print-specific styles */
+        @media print {
+          @page {
+            margin: 30px;
+            size: auto;
+          }
+            body {
+                margin: 0;
+                padding: 0;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .container {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+            }
+            .filter-section, #printButton, #fetchCommentsButton {
+                display: none;
+            }
+            table {
+                page-break-inside: avoid;
+            }
+        }
+        #printButton {
+            background-color: #28a745;
+            margin-left: 10px;
+        }
+        #printButton:hover {
+            background-color: #218838;
+        }
+        /* From Uiverse.io by doniaskima */ 
+        .btn-23,
+        .btn-23 *,
+        .btn-23 :after,
+        .btn-23 :before,
+        .btn-23:after,
+        .btn-23:before {
+          border: 0 solid;
+          box-sizing: border-box;
+        }
+
+        .btn-23 {
+          -webkit-tap-highlight-color: transparent;
+          background-color: #153a7e;
+          background-image: none;
+          color: #fff;
+          cursor: pointer;
+          font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+            Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
+            Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+          font-size: 14px;
+          font-weight: bold;
+          line-height: 1.5;
+          margin: 0;
+          padding: 0;
+          text-transform: uppercase;
+        }
+
+        .btn-23:disabled {
+          cursor: default;
+        }
+
+        .btn-23:-moz-focusring {
+          outline: auto;
+        }
+
+        .btn-23 svg {
+          display: block;
+        }
+
+        .btn-23 [hidden] {
+          display: none;
+        }
+
+        .btn-23 {
+          border-radius: 99rem;
+          border-width: 2px;
+          overflow: hidden;
+          padding: 0.8rem 3rem;
+          position: relative;
+        }
+
+        .btn-23 span {
+          display: grid;
+          inset: 0;
+          place-items: center;
+          position: absolute;
+          transition: opacity 0.2s ease;
+        }
+
+        .btn-23 .marquee {
+          --spacing: 5em;
+          --start: 0em;
+          --end: 5em;
+          -webkit-animation: marquee 1s linear infinite;
+          animation: marquee 1s linear infinite;
+          -webkit-animation-play-state: paused;
+          animation-play-state: paused;
+          opacity: 0;
+          position: relative;
+          text-shadow: #fff var(--spacing) 0, #fff calc(var(--spacing) * -1) 0,
+            #fff calc(var(--spacing) * -2) 0;
+        }
+
+        .btn-23:hover .marquee {
+          -webkit-animation-play-state: running;
+          animation-play-state: running;
+          opacity: 1;
+        }
+
+        .btn-23:hover .text {
+          opacity: 0;
+        }
+
+        @-webkit-keyframes marquee {
+          0% {
+            transform: translateX(var(--start));
+          }
+
+          to {
+            transform: translateX(var(--end));
+          }
+        }
+
+        @keyframes marquee {
+          0% {
+            transform: translateX(var(--start));
+          }
+
+          to {
+            transform: translateX(var(--end));
+          }
+        }
+        .logo {
+          align-items: center;
+          justify-content: center;
+          display: flex;
+          margin: 25px;
+        }
+
+        .logo img {
+          width: 900px;
+          height: auto;
+          max-width: 100%;
+        }
+        .signature-section {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 50px;
+            margin-right: 20px;
+            text-align: center;
+        }
+
+        .signature-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .signature-label {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 5px; /* Add some space between the label and the image */
+            text-align: center;
+        }
+
+        .signature-image {
+            width: 150px; /* Adjust the width as needed */
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        /* Ensure signature appears in print */
+        @media print {
+            .signature-section {
+                position: fixed;
+                bottom: 50px;
+                right: 20px;
+                margin-top: 0;
+            }
+
+            .signature-image {
+                width: 120px; /* Adjust the width for print */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+      <div class="logo">
+        <img src="logo.png" width="900px">
+      </div>
+      <div class="filter-section">
+            <select id="year" required>
+                <option value="">Select Year</option>
+                <option value="1">1st Year</option>
+                <option value="2">2nd Year</option>
+                <option value="3">3rd Year</option>
+                <option value="4">4th Year</option>
+            </select>
+            
+            <select id="semester" required>
+                <option value="">Select Semester</option>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+            </select>
+            
+            <select id="branch" required>
+                <option value="">Select Branch</option>
+                <option value="CSE">CSE</option>
+                <option value="ECE">ECE</option>
+                <option value="EEE">EEE</option>
+                <option value="MECH">MECH</option>
+                <option value="CIVIL">CIVIL</option>
+                <option value="AI">AI</option>
+                <option value="AIML">AIML</option>
+                <option value="DS">DS</option>
+                <option value="CS">CS</option>
+                <option value="IT">IT</option>
+                <option value="MBA">MBA</option>
+                <option value="MCA">MCA</option>
+            </select>
+            
+            <select id="section" required>
+                <option value="">Select Section</option>
+                <option value="A">Section A</option>
+                <option value="B">Section B</option>
+                <option value="C">Section C</option>
+                <option value="D">Section D</option>
+                <option value="E">Section E</option>
+                <option value="F">Section F</option>
+                <option value="G">Section G</option>
+            </select>
+            <button class="btn-23" id="fetchButton">
+                <span class="text">FETCH DATA</span>
+                <span aria-hidden="" class="marquee">FETCHING</span>
+            </button>
+            <button class="btn-23" id="printButton">
+                <span class="text">PRINT</span>
+                <span aria-hidden="" class="marquee">PRINTING</span>
+            </button>
+            <button class="btn-23" id="fetchCommentsButton">
+                <span class="text">FETCH COMMENTS</span>
+                <span aria-hidden="" class="marquee">FETCHING____________</span>
+            </button>
+        </div>
+        
+        <div id="feedbackResults" class="feedback-results">
+            <!-- Feedback results will be dynamically inserted here -->
+        </div>
+
+        <!-- Add this div for comments table -->
+        <div id="commentsTableContainer" style="margin-top: 20px;"></div>
+    </div>
+    <div class="signature-section">
+        <div class="signature-box">
+         
+            <img src="signature.png" alt="Vice Principal Signature" class="signature-image">
+            <div class="signature-label">Signature of Vice Principal</div>
+        </div>
+    </div>
+    <script>
+        // Add print functionality
+        document.getElementById('printButton').addEventListener('click', function() {
+            // Trigger browser's print dialog
+            window.print();
+        });
+
+        // Optional: Add print preview styles or additional print logic if needed
+    </script>
+    
+    <script src="crudOperations.js"></script>
+</body>
+</html>

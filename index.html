@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FEEDBACK PORTAL</title>
+    <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU6S6_O-nyrsDfvosOFqEbKjeTBReHLvOQGg&s" type="image/x-icon">
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            gap: 30px;
+            position: relative;
+            padding: 15px;
+            overflow-x: hidden;
+            background-image: url('img.png'); /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .page-container::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0,0,0,0.7), rgba(0,0,0,0.8));
+            z-index: 1;
+        }
+
+        .logo-wrapper {
+            z-index: 2;
+            width: 100%;
+            max-width: 1000px;
+            padding: 0 15px;
+        }
+
+        .logo-wrapper img {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 0 10px rgba(69,243,255,0.5));
+        }
+
+        .box {
+            position: relative;
+            width: 380px;
+            height: 480px;
+            background: #000000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            z-index: 2;
+        }
+
+        .box::before,
+        .box::after,
+        .box-color-1,
+        .box-color-2,
+        .box-color-3,
+        .box-color-4,
+        .box-color-5,
+        .box-color-6,
+        .box-color-7,
+        .box-color-8 {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 380px;
+            height: 480px;
+            transform-origin: bottom right;
+            animation: animate 8s linear infinite;
+        }
+
+        .box::before { background: linear-gradient(0deg, transparent, #45f3ff, transparent, #45f3ff); }
+        .box::after { background: linear-gradient(10deg, transparent, #ff00fc, transparent, #ff00fc); animation-delay: -2s; }
+        .box-color-1 { background: linear-gradient(20deg, transparent, #00ff00, transparent, #00ff00); animation-delay: -4s; }
+        .box-color-2 { background: linear-gradient(30deg, transparent, #ff6b00, transparent, #ff6b00); animation-delay: -6s; }
+        .box-color-3 { background: linear-gradient(40deg, transparent, #8a2be2, transparent, #8a2be2); animation-delay: -8s; }
+        .box-color-4 { background: linear-gradient(50deg, transparent, #ff1493, transparent, #ff1493); animation-delay: -10s; }
+        .box-color-5 { background: linear-gradient(60deg, transparent, #00bfff, transparent, #00bfff); animation-delay: -12s; }
+        .box-color-6 { background: linear-gradient(70deg, transparent, #32cd32, transparent, #32cd32); animation-delay: -14s; }
+        .box-color-7 { background: linear-gradient(80deg, transparent, #ff4500, transparent, #ff4500); animation-delay: -16s; }
+        .box-color-8 { background: linear-gradient(90deg, transparent, #1e90ff, transparent, #1e90ff); animation-delay: -18s; }
+
+        @keyframes animate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .form {
+            position: absolute;
+            inset: 2px;
+            border-radius: 12px;
+            background: #000000;
+            z-index: 10;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form h2 {
+            color: #45f3ff;
+            font-weight: 500;
+            text-align: center;
+            letter-spacing: 0.1em;
+            text-shadow: 0 0 10px rgba(69,243,255,0.5);
+            text-transform: uppercase;
+        }
+
+        .role-selector {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 300px; /* Increased width to accommodate 3 options */
+            height: 40px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: -2px;
+            cursor: pointer;
+            transition: background-color 1s ease;
+        }
+
+        .toggle-switch:hover {
+            background: #2a2a2a;
+        }
+
+        .switch-handle {
+            position: absolute;
+            width: 33.33%; /* Adjusted width for 3 options */
+            height: 35px;
+            background: #45f3ff;
+            border-radius: 16px;
+            transition: transform 1s ease;
+            box-shadow: 0 2px 10px rgba(69, 243, 255, 0.706);
+        }
+
+        .switch-handle.coordinator {
+            transform: translateX(100%);
+        }
+
+        .switch-handle.bsh {
+            transform: translateX(200%);
+        }
+
+        .switch-labels {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 15px;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .switch-label {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8f8f8f;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            user-select: none;
+        }
+
+        .switch-label.active {
+            color: #000000;
+            font-weight: 500;
+        }
+
+        .inputbox {
+            position: relative;
+            width: 300px;
+            margin-top: 35px;
+        }
+
+        .inputbox input {
+            position: relative;
+            width: 100%;
+            padding: 20px 10px 10px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-size: 1em;
+            letter-spacing: 0.05em;
+            z-index: 10;
+        }
+
+        .inputbox span {
+            position: absolute;
+            left: 0;
+            padding: 20px 0px 10px;
+            font-size: 1em;
+            color: #8f8f8f;
+            pointer-events: none;
+            letter-spacing: 0.05em;
+            transition: 0.5s;
+        }
+
+        .inputbox input:valid ~ span,
+        .inputbox input:focus ~ span {
+            color: #45f3ff;
+            transform: translateX(0px) translateY(-34px);
+            font-size: 0.75em;
+        }
+
+        .inputbox i {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background: #45f3ff;
+            border-radius: 4px;
+            transition: 0.5s;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .inputbox input:valid ~ i,
+        .inputbox input:focus ~ i {
+            height: 44px;
+            opacity: 0.1;
+        }
+
+        input[type="submit"] {
+            border: none;
+            outline: none;
+            background: #45f3ff;
+            padding: 11px 25px;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #000000;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        input[type="submit"]:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(69,243,255,0.3);
+        }
+
+        input[type="submit"]:active {
+            transform: scale(0.98);
+            opacity: 0.8;
+        }
+
+        @media screen and (max-width: 400px) {
+            .box {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+            }
+
+            .form {
+                padding: 40px 20px;
+            }
+
+            .inputbox {
+                width: 100%;
+            }
+
+            .toggle-switch {
+                width: 250px; /* Adjusted for smaller screens */
+            }
+
+            .switch-handle {
+                width: 33.33%; /* Adjusted for 3 options */
+            }
+
+            .switch-handle.coordinator {
+                transform: translateX(100%);
+            }
+
+            .switch-handle.bsh {
+                transform: translateX(200%);
+            }
+
+            .logo-wrapper img {
+                width: 120px;
+            }
+        }
+
+        .branch-selector {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .branch-selector select {
+            width: 100%;
+            padding: 10px;
+            background: #1a1a1a;
+            border: 1px solid #45f3ff;
+            border-radius: 8px;
+            color: #ffffff;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .branch-selector select:focus {
+            box-shadow: 0 0 10px rgba(69,243,255,0.3);
+        }
+
+        .branch-selector select option {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .form > *:nth-child(1) { animation-delay: 0.1s; }
+        .form > *:nth-child(2) { animation-delay: 0.2s; }
+        .form > *:nth-child(3) { animation-delay: 0.3s; }
+        .form > *:nth-child(4) { animation-delay: 0.4s; }
+        .form > *:nth-child(5) { animation-delay: 0.5s; }
+
+       
+        /* Canvas for particle animation */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>    
+    <div class="page-container">
+        <!-- Canvas for particle animation -->
+        <canvas id="particleCanvas"></canvas>
+
+        <div class="logo-wrapper">
+            <img src="logo.png" alt="Logo">
+        </div>
+        
+        <div class="box">
+            <div class="box-color-1"></div>
+            <div class="box-color-2"></div>
+            <div class="box-color-3"></div>
+            <div class="box-color-4"></div>
+            <div class="box-color-5"></div>
+            <div class="box-color-6"></div>
+            <div class="box-color-7"></div>
+            <div class="box-color-8"></div>
+
+            <form class="form" id="loginForm" onsubmit="return validateLogin(event)">
+                <h2>STUDENT FEEDBACK</h2>
+                <div class="role-selector">
+                    <div class="toggle-switch" id="roleToggle">
+                        <div class="switch-handle"></div>
+                        <div class="switch-labels">
+                            <span class="switch-label active" data-role="admin">Admin</span>
+                            <span class="switch-label" data-role="coordinator">Coordinator</span>
+                            <span class="switch-label" data-role="bsh">BS&H</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="branch-selector" id="branchSelector">
+                    <select id="branch" required>
+                        <option value="CSE">CSE</option>
+                        <option value="ECE">ECE</option>
+                        <option value="EEE">EEE</option>
+                        <option value="MECH">MECH</option>
+                        <option value="CIVIL">CIVIL</option>
+                        <option value="AI">AI</option>
+                        <option value="AIML">AIML</option>
+                        <option value="DS">DS</option>
+                        <option value="CS">CS</option>
+                        <option value="IT">IT</option>
+                        <option value="MBA">MBA</option>
+                        <option value="MCA">MCA</option>
+                    </select>
+                </div>
+                <div class="inputbox">
+                    <input type="text" id="username" required="required">
+                    <span>Username</span>
+                    <i></i>
+                </div>
+                <div class="inputbox">
+                    <input type="password" id="password" required="required">
+                    <span>Password</span>
+                    <i></i>
+                </div>
+                <input type="submit" value="Login">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Predefined users
+        const users = {
+            admin: {
+                username: 'admin',
+                password: 'admin123',
+                role: 'admin'
+            },
+            coordinators: {
+                'cse_coord': { password: 'cse@2024', role: 'coordinator', branch: 'CSE' },
+                'ece_coord': { password: 'ece@2024', role: 'coordinator', branch: 'ECE' },
+                'eee_coord': { password: 'eee@2024', role: 'coordinator', branch: 'EEE' },
+                'mech_coord': { password: 'mech@2024', role: 'coordinator', branch: 'MECH' },
+                'civil_coord': { password: 'civil@2024', role: 'coordinator', branch: 'CIVIL' },
+                'ai_coord': { password: 'ai@2024', role: 'coordinator', branch: 'AI' },
+                'aiml_coord': { password: 'aiml@2024', role: 'coordinator', branch: 'AIML' },
+                'ds_coord': { password: 'ds@2024', role: 'coordinator', branch: 'DS' },
+                'cs_coord': { password: 'cs@2024', role: 'coordinator', branch: 'CS' },
+                'it_coord': { password: 'it@2024', role: 'coordinator', branch: 'IT' },
+                'mba_coord': { password: 'mba@2024', role: 'coordinator', branch: 'MBA' },
+                'mca_coord': { password: 'mca@2024', role: 'coordinator', branch: 'MCA' }
+            },
+            bsh: {
+                'bsh_coord': { password: 'bsh@2024', role: 'bsh' }
+            }
+        };
+
+        // Get DOM elements
+        const roleToggle = document.getElementById('roleToggle');
+        const switchHandle = roleToggle.querySelector('.switch-handle');
+        const labels = roleToggle.querySelectorAll('.switch-label');
+        const branchSelector = document.getElementById('branchSelector');
+        let currentRole = 'admin';
+
+        // Role toggle event listener
+        roleToggle.addEventListener('click', (e) => {
+            const clickedLabel = e.target.closest('.switch-label');
+            if (!clickedLabel) return;
+
+            const newRole = clickedLabel.dataset.role;
+            if (newRole === currentRole) return;
+
+            currentRole = newRole;
+            
+            // Remove all classes first
+            switchHandle.classList.remove('coordinator', 'bsh');
+            
+            // Add appropriate class based on role
+            if (currentRole === 'coordinator') {
+                switchHandle.classList.add('coordinator');
+            } else if (currentRole === 'bsh') {
+                switchHandle.classList.add('bsh');
+            }
+            
+            labels.forEach(label => {
+                label.classList.toggle('active', label.dataset.role === currentRole);
+            });
+            
+            // Show branch selector only for coordinator role
+            branchSelector.style.display = currentRole === 'coordinator' ? 'block' : 'none';
+        });
+
+        // Function to check for uppercase letters
+        function containsUppercase(str) {
+            return /[A-Z]/.test(str);
+        }
+
+        // Function to show error message
+        function showError(message, inputElement) {
+            const errorId = `${inputElement.id}-error`;
+            let errorDiv = document.getElementById(errorId);
+            
+            if (!errorDiv) {
+                errorDiv = document.createElement('div');
+                errorDiv.id = errorId;
+                errorDiv.style.color = '#ff4444';
+                errorDiv.style.fontSize = '0.7em';
+                errorDiv.style.marginTop = '5px';
+                inputElement.parentElement.appendChild(errorDiv);
+            }
+            
+            errorDiv.textContent = message;
+            inputElement.style.borderColor = '#ff4444';
+            
+            setTimeout(() => {
+                errorDiv.remove();
+                inputElement.style.borderColor = '';
+            }, 3000);
+        }
+
+        // Input validation for username and password
+        function validateInput(inputElement) {
+            const value = inputElement.value;
+            if (containsUppercase(value)) {
+                showError('Please use lowercase letters only', inputElement);
+                inputElement.value = value.toLowerCase();
+                return false;
+            }
+            return true;
+        }
+
+        // Add input event listeners
+        document.getElementById('username').addEventListener('input', function(e) {
+            validateInput(e.target);
+        });
+
+        document.getElementById('password').addEventListener('input', function(e) {
+            validateInput(e.target);
+        });
+
+        // Login validation function
+        function validateLogin(event) {
+            event.preventDefault();
+            console.log('Login validation started');
+            
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const branch = document.getElementById('branch')?.value;
+            
+            const username = usernameInput.value.toLowerCase().trim();
+            const password = passwordInput.value.toLowerCase().trim();
+
+            if (currentRole === 'admin') {
+                if (username === users.admin.username && password === users.admin.password) {
+                    sessionStorage.setItem('userRole', 'admin');
+                    sessionStorage.setItem('username', username);
+                    window.location.href = 'admin.html';
+                    return false;
+                }
+            } else if (currentRole === 'coordinator') {
+                const coordinator = users.coordinators[username];
+                if (coordinator && coordinator.password === password && coordinator.branch === branch) {
+                    sessionStorage.setItem('userRole', 'coordinator');
+                    sessionStorage.setItem('userBranch', branch);
+                    sessionStorage.setItem('username', username);
+                    window.location.href = 'coord.html';
+                    return false;
+                }
+            } else if (currentRole === 'bsh') {
+                const bshCoord = users.bsh['bsh_coord'];
+                if (username === 'bsh_coord' && password === bshCoord.password) {
+                    sessionStorage.setItem('userRole', 'bsh');
+                    sessionStorage.setItem('username', username);
+                    window.location.href = 'bsh.html';
+                    return false;
+                }
+            }
+
+            alert('Invalid credentials! Please check your username and password.');
+            return false;
+        }
+
+        // Add form submit event listener
+        document.getElementById('loginForm').addEventListener('submit', validateLogin);
+
+        // Add placeholders with instructions
+        window.addEventListener('DOMContentLoaded', () => {
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            
+            const instructionText = document.createElement('div');
+            instructionText.style.color = '#45f3ff';
+            instructionText.style.fontSize = '0.7em';
+            instructionText.style.textAlign = 'center';
+            instructionText.style.marginTop = '10px';
+            instructionText.textContent = 'Please use lowercase letters only';
+            
+            document.querySelector('.form').insertBefore(instructionText, document.querySelector('input[type="submit"]'));
+        });
+
+        // Particle Animation Script
+       // Particle Animation Script
+       const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray = [];
+
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+
+            update() {
+                if (this.x + this.size > canvas.width || this.x - this.size < 0) {
+                    this.directionX = -this.directionX;
+                }
+                if (this.y + this.size > canvas.height || this.y - this.size < 0) {
+                    this.directionY = -this.directionY;
+                }
+
+                this.x += this.directionX;
+                this.y += this.directionY;
+                this.draw();
+            }
+        }
+
+        function init() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 9000;
+
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = Math.random() * 3 + 1; // Slightly larger particles
+                let x = Math.random() * (canvas.width - size * 2) + size;
+                let y = Math.random() * (canvas.height - size * 2) + size;
+                let directionX = Math.random() * 0.4 - 0.2;
+                let directionY = Math.random() * 0.4 - 0.2;
+                let color = '#45f3ff'; // Bright cyan color
+                let opacity = Math.random() * 0.8 + 0.2; // Random opacity between 0.2 and 1.0
+                color = `rgba(255, 255, 255, ${opacity})`; // Apply opacity to the color
+
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        });
+
+        init();
+        animate();
+
+        // Console log for script initialization
+        console.log('Login script initialized with lowercase enforcement');
+    </script>
+</body>
+</html>

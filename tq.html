@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FEEDBACK PORTAL</title>
+    <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU6S6_O-nyrsDfvosOFqEbKjeTBReHLvOQGg&s" type="image/x-icon">
+
+    <link href='https://fonts.googleapis.com/css?family=Lato:300,400|Montserrat:700|Alatsi' rel='stylesheet' type='text/css'>
+    <style>
+        body {
+            font-family: 'Alatsi', sans-serif;
+            margin: 0;
+            overflow: hidden; /* Prevent scrolling */
+            background: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full viewport height */
+            font-family: 'Lato', sans-serif;
+            position: relative; /* Added for canvas positioning */
+        }
+
+        /* Canvas styling for full-screen background */
+        canvas {
+            position: fixed; /* Fixed to cover the entire screen */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Ensure canvas is behind other content */
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative; /* Ensure content is above canvas */
+            z-index: 1; /* Ensure content is above canvas */
+            width: 100%;
+            height: 100vh; /* Full viewport height */
+            padding: 20px; /* Add padding to prevent content from touching edges */
+            box-sizing: border-box; /* Include padding in height calculation */
+        }
+
+        /* Logo styling */
+        .logo {
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            width: 100%;
+            max-width: 660px;
+            margin-top: 20px; /* Reduced margin for better spacing */
+            margin-bottom: 20px; /* Adjusted for better spacing on mobile */
+        }
+
+        .logo img {
+            width: 100%;
+            height: auto;
+            max-height: 20vh; /* Limit logo height to prevent overflow */
+        }
+
+        /* "THANK YOU!" text styling */
+        .title {
+            font-size: 8vw; /* Adjusted for better scaling */
+            color: white;
+            margin-bottom: 10px; /* Reduced margin for better spacing */
+        }
+
+        /* Main content styling */
+        .main-content {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.451);
+            padding: 20px; /* Adjusted padding for smaller screens */
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: scale(0.7);
+            animation: popIn 0.8s 0.5s forwards;
+            width: 90%;
+            max-width: 500px;
+            margin-bottom: 10px; /* Reduced margin for better spacing */
+        }
+
+        .main-content__checkmark {
+            font-size: 4rem; /* Adjusted for smaller screens */
+            color: #48bb78;
+            display: block;
+            margin-bottom: 10px; /* Reduced margin for better spacing */
+            animation: bounce 1s;
+        }
+
+        .main-content__body {
+            color: #f0f0f0;
+            font-size: 1rem; /* Adjusted for smaller screens */
+            max-width: 500px;
+            line-height: 1.6;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* Footer styling */
+        .site-footer {
+            margin-top: auto; /* Push footer to the bottom */
+            opacity: 0;
+            animation: fadeIn 1s 1.2s forwards;
+            text-align: center;
+            width: 100%;
+            padding: 10px 0; /* Reduced padding for better spacing */
+            background: rgba(0, 0, 0, 0.5); /* Add background for better visibility */
+            position: absolute; /* Position footer at the bottom */
+            bottom: 0; /* Stick to the bottom */
+        }
+
+        .site-footer__fineprint {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.8rem; /* Adjusted for smaller screens */
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes popIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-30px);}
+            60% {transform: translateY(-15px);}
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 10vw; /* Larger font size for smaller screens */
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .main-content__checkmark {
+                font-size: 3rem;
+            }
+
+            .main-content__body {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 12vw; /* Even larger font size for very small screens */
+            }
+
+            .main-content {
+                padding: 10px;
+            }
+
+            .main-content__checkmark {
+                font-size: 2.5rem;
+            }
+
+            .main-content__body {
+                font-size: 0.8rem;
+            }
+
+            .logo {
+                margin-bottom: 10px; /* Less space below logo on very small screens */
+            }
+
+            .site-footer {
+                padding: 5px 0; /* Reduce padding on very small screens */
+            }
+        }
+    </style>
+</head>
+<body onload="disableBackButton();">
+    <!-- Canvas for background animations -->
+    <canvas id="backgroundCanvas"></canvas>
+
+    <div class="container">
+        <!-- Logo at the top -->
+        <div class="logo">
+            <img src="logo3.png" alt="Logo">
+        </div>
+
+        <!-- "THANK YOU!" text below the logo -->
+        <span class="title">THANK YOU!</span>
+
+        <!-- Main content in the middle -->
+        <div class="main-content">
+            <i class="fa fa-check main-content__checkmark" id="checkmark"></i>
+            <p class="main-content__body" data-lead-id="main-content-body">Thank You For Submitting Your Response.</p>
+        </div>
+
+        <!-- Footer at the bottom -->
+        <footer class="site-footer" id="footer">
+            <p class="site-footer__fineprint" id="fineprint">© 2025 All Rights Reserved to CSE</p>
+        </footer>
+    </div>  
+
+    <script>
+        // Disable back button function
+        function disableBackButton() {
+            window.history.forward();
+        }
+
+        // Prevent back navigation through history manipulation
+        window.onload = disableBackButton; 
+
+        // Handle page show events for cached pages (like when user presses back)
+        window.onpageshow = function(evt) {
+            if (evt.persisted) disableBackButton();
+        }
+
+        // Prevent back on page unload (although this is optional)
+        window.onunload = function() {
+            void(0);
+        };
+
+        // Additional security: If user somehow gets back, redirect to thank you page
+        if(document.referrer.includes('feedback')) {
+            window.location.replace('tq.html');
+        }
+    </script>
+    <script>
+        var canvas = document.getElementById("backgroundCanvas");
+        var width = canvas.width = window.innerWidth;
+        var height = canvas.height = window.innerHeight;
+        var gl = canvas.getContext('webgl');
+
+        var mouse = {x: 0, y: 0};
+
+        var numMetaballs = 30;
+        var metaballs = [];
+
+        for (var i = 0; i < numMetaballs; i++) {
+          var radius = Math.random() * 60 + 10;
+          metaballs.push({
+            x: Math.random() * (width - 2 * radius) + radius,
+            y: Math.random() * (height - 2 * radius) + radius,
+            vx: (Math.random() - 0.5) * 3,
+            vy: (Math.random() - 0.5) * 3,
+            r: radius * 0.75
+          });
+        }
+
+        var vertexShaderSrc = `
+        attribute vec2 position;
+
+        void main() {
+        // position specifies only x and y.
+        // We set z to be 0.0, and w to be 1.0
+        gl_Position = vec4(position, 0.0, 1.0);
+        }
+        `;
+
+        var fragmentShaderSrc = `
+        precision highp float;
+
+        const float WIDTH = ` + (width >> 0) + `.0;
+        const float HEIGHT = ` + (height >> 0) + `.0;
+
+        uniform vec3 metaballs[` + numMetaballs + `];
+
+        void main(){
+        float x = gl_FragCoord.x;
+        float y = gl_FragCoord.y;
+
+        float sum = 0.0;
+        for (int i = 0; i < ` + numMetaballs + `; i++) {
+        vec3 metaball = metaballs[i];
+        float dx = metaball.x - x;
+        float dy = metaball.y - y;
+        float radius = metaball.z;
+
+        sum += (radius * radius) / (dx * dx + dy * dy);
+        }
+
+        if (sum >= 0.99) {
+        gl_FragColor = vec4(mix(vec3(x / WIDTH, y / HEIGHT, 1.0), vec3(0, 0, 0), max(0.0, 1.0 - (sum - 0.99) * 100.0)), 1.0);
+        return;
+        }
+
+        gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+        }
+
+        `;
+
+        var vertexShader = compileShader(vertexShaderSrc, gl.VERTEX_SHADER);
+        var fragmentShader = compileShader(fragmentShaderSrc, gl.FRAGMENT_SHADER);
+
+        var program = gl.createProgram();
+        gl.attachShader(program, vertexShader);
+        gl.attachShader(program, fragmentShader);
+        gl.linkProgram(program);
+        gl.useProgram(program);
+
+        var vertexData = new Float32Array([
+          -1.0,  1.0, // top left
+          -1.0, -1.0, // bottom left
+          1.0,  1.0, // top right
+          1.0, -1.0, // bottom right
+        ]);
+        var vertexDataBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexDataBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, vertexData, gl.STATIC_DRAW);
+
+        var positionHandle = getAttribLocation(program, 'position');
+        gl.enableVertexAttribArray(positionHandle);
+        gl.vertexAttribPointer(positionHandle,
+                               2, // position is a vec2
+                               gl.FLOAT, // each component is a float
+                               gl.FALSE, // don't normalize values
+                               2 * 4, // two 4 byte float components per vertex
+                               0 // offset into each span of vertex data
+                              );
+
+        var metaballsHandle = getUniformLocation(program, 'metaballs');
+
+        loop();
+        function loop() {
+          for (var i = 0; i < numMetaballs; i++) {
+            var metaball = metaballs[i];
+            metaball.x += metaball.vx;
+            metaball.y += metaball.vy;
+
+            if (metaball.x < metaball.r || metaball.x > width - metaball.r) metaball.vx *= -1;
+            if (metaball.y < metaball.r || metaball.y > height - metaball.r) metaball.vy *= -1;
+          }
+
+          var dataToSendToGPU = new Float32Array(3 * numMetaballs);
+          for (var i = 0; i < numMetaballs; i++) {
+            var baseIndex = 3 * i;
+            var mb = metaballs[i];
+            dataToSendToGPU[baseIndex + 0] = mb.x;
+            dataToSendToGPU[baseIndex + 1] = mb.y;
+            dataToSendToGPU[baseIndex + 2] = mb.r;
+          }
+          gl.uniform3fv(metaballsHandle, dataToSendToGPU);
+          
+          //Draw
+          gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+          requestAnimationFrame(loop);
+        }
+
+        function compileShader(shaderSource, shaderType) {
+          var shader = gl.createShader(shaderType);
+          gl.shaderSource(shader, shaderSource);
+          gl.compileShader(shader);
+
+          if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            throw "Shader compile failed with: " + gl.getShaderInfoLog(shader);
+          }
+
+          return shader;
+        }
+
+        function getUniformLocation(program, name) {
+          var uniformLocation = gl.getUniformLocation(program, name);
+          if (uniformLocation === -1) {
+            throw 'Can not find uniform ' + name + '.';
+          }
+          return uniformLocation;
+        }
+
+        function getAttribLocation(program, name) {
+          var attributeLocation = gl.getAttribLocation(program, name);
+          if (attributeLocation === -1) {
+            throw 'Can not find attribute ' + name + '.';
+          }
+          return attributeLocation;
+        }
+
+        canvas.onmousemove = function(e) {
+          mouse.x = e.clientX;
+          mouse.y = e.clientY;
+        }
+    </script>
+</body>
+</html>

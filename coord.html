@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FEEDBACK PORTAL</title>
+  <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU6S6_O-nyrsDfvosOFqEbKjeTBReHLvOQGg&s" type="image/x-icon">
+  <style>
+ :root {
+  --gradient-color-1: #16539f;
+  --gradient-color-2: #151515;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: linear-gradient(135deg, var(--gradient-color-1), var(--gradient-color-2));
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  font-size: 16px;
+}
+
+.logo {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  margin: 10px;
+}
+
+.logo img {
+  max-width: 700px; /* Maximum width for the logo */
+  width: 100%; /* Allow it to shrink on smaller screens */
+  height: auto; /* Maintain aspect ratio */
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+#background-canvas, #background-gradient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+#background-gradient {
+  background: linear-gradient(135deg, var(--gradient-color-1) 0%, var(--gradient-color-2) 100%);
+  pointer-events: none;
+  z-index: -1;
+  opacity: 1;
+}
+
+#teacherForm {
+  max-width: 800px; /* Constrain the form width on large screens */
+  width: 90%; /* Allow flexibility for smaller screens */
+  margin: 20px auto; /* Center the form */
+  padding: 20px;
+  background-color: rgba(8, 78, 135, 0.204);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 15px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.form-header {
+  max-width: 100%; /* Adjusted for smaller screens */
+  margin: 0 auto 20px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
+  gap: 15px;
+  max-width: 100%; /* Ensure it doesn't stretch beyond the container */
+  margin: 0 auto 20px;
+}
+
+.subjects-container-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+  gap: 20px;
+  max-width: 100%; /* Ensure it doesn't stretch beyond the container */
+  margin: 0 auto;
+}
+
+.subject-section {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px; /* Consistent padding */
+  margin-bottom: 20px; /* Consistent margin */
+}
+
+h2, h3 {
+  text-align: center;
+  color: #ffffff;
+  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  margin-bottom: 15px;
+  font-size: 1.5em;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+label {
+  display: block;
+  margin: 8px 0 4px;
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 1em;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(0, 170, 255, 0.2);
+  border-radius: 4px;
+  font-size: 1em;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4d94e0;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.02);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.remove-pair {
+  background-color: #dc3545;
+  width: auto;
+  margin-left: 10px;
+  padding: 6px 12px;
+  font-size: 0.9em;
+}
+
+.add-button {
+  background-color: #28a745;
+  margin-top: 10px;
+}
+
+.teacher-subject-pair, .lab-teacher-pair {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Button Container for Side-by-Side Buttons */
+.button-container {
+  display: flex; /* Use Flexbox for horizontal alignment */
+  gap: 10px; /* Space between buttons */
+  justify-content: center; /* Center buttons horizontally */
+  margin: 20px auto; /* Add margin for spacing */
+  max-width: 100%; /* Ensure it doesn't overflow */
+  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+}
+
+.button-container button {
+  flex: 1; /* Allow buttons to grow and share space */
+  max-width: 200px; /* Limit button width */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr; /* Single column on smaller screens */
+  }
+
+  .subjects-container-wrapper {
+    grid-template-columns: 1fr; /* Single column on smaller screens */
+  }
+
+  #teacherForm {
+    padding: 15px; /* Reduced padding on smaller screens */
+  }
+
+  h2 {
+    font-size: 1.8em; /* Smaller font size for headings on smaller screens */
+  }
+
+  h3 {
+    font-size: 1.3em; /* Smaller font size for subheadings on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 14px; /* Smaller base font size for mobile */
+  }
+
+  h2 {
+    font-size: 1.5em; /* Even smaller font size for headings on mobile */
+  }
+
+  h3 {
+    font-size: 1.1em; /* Even smaller font size for subheadings on mobile */
+  }
+
+  button {
+    padding: 8px; /* Smaller padding for buttons on mobile */
+  }
+
+  .button-container {
+    flex-direction: column; /* Stack buttons vertically on very small screens */
+  }
+
+  .button-container button {
+    max-width: 100%; /* Full width for buttons on mobile */
+  }
+}
+
+/* Media Queries for Large Screens */
+@media (min-width: 1200px) {
+  body {
+    font-size: 18px; /* Slightly larger font size for large screens */
+  }
+
+  #teacherForm {
+    max-width: 1000px; /* Slightly wider form for large screens */
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(3, 1fr); /* Fixed 3 columns for large screens */
+  }
+
+  .subjects-container-wrapper {
+    grid-template-columns: repeat(2, 1fr); /* Fixed 2 columns for large screens */
+  }
+}
+  </style>
+</head>
+<body>
+  <canvas id="background-canvas"></canvas>
+  <div id="background-gradient"></div>
+  <div class="logo">
+    <img src="logo.png" width="700px" alt="Logo">
+  </div>
+
+  <form id="teacherForm">
+    <div class="form-header">
+      <h2>Faculty Selection Form</h2>
+    </div>
+
+    <div class="form-grid">
+      <div>
+        <label for="year">Year:</label>
+        <select id="year" required>
+          <option value="">Select Year</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="academicYear">Academic Year:</label>
+        <input 
+          type="text" 
+          id="academicYear" 
+          placeholder="YYYY-YYYY" 
+          pattern="^\d{4}-\d{4}$" 
+          required
+        >
+      </div>
+
+      <div>
+        <label for="semester">Semester:</label>
+        <select id="semester" required>
+          <option value="">Select Semester</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="branch">Branch:</label>
+        <select id="branch" required>
+          <option value="">Select Branch</option>
+          <option value="CSE">CSE</option>
+          <option value="ECE">ECE</option>
+          <option value="EEE">EEE</option>
+          <option value="MECH">MECH</option>
+          <option value="CIVIL">CIVIL</option>
+          <option value="AI">AI</option>
+          <option value="AIML">AIML</option>
+          <option value="DS">DS</option>
+          <option value="CS">CS</option>
+          <option value="IT">IT</option>
+          <option value="MBA">MBA</option>
+          <option value="MCA">MCA</option>
+          <option value="BS&H">BS&H</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="section">Section:</label>
+        <select id="section" required>
+          <option value="">Select Section</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+          <option value="E">E</option>
+          <option value="F">F</option>
+          <option value="G">G</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="subjects-container-wrapper">
+      <div class="subject-section">
+        <h3>Theory Subjects</h3>
+        <div id="subjects-container">
+          <div class="teacher-subject-pair">
+            <label for="teacher1">Teacher 1:</label>
+            <input type="text" id="teacher1" name="teacher" placeholder="Teacher Name" required>
+            <label for="subject1">Subject 1:</label>
+            <input type="text" id="subject1" name="subject" placeholder="Subject Name" required>
+          </div>
+        </div>
+        <button type="button" id="add-teacher-subject" class="add-button">+ Add Theory Subject</button>
+      </div>
+
+      <div class="subject-section">
+        <h3>Lab Subjects</h3>
+        <div id="labs-container">
+          <div class="lab-teacher-pair">
+            <label for="labTeacher1">Lab Teacher 1:</label>
+            <input type="text" id="labTeacher1" name="labTeacher" placeholder="Lab Teacher Name" required>
+            <label for="labName1">Lab Name 1:</label>
+            <input type="text" id="labName1" name="labName" placeholder="Lab Name" required>
+          </div>
+        </div>
+        <button type="button" id="add-lab-teacher" class="add-button">+ Add Lab Subject</button>
+      </div>
+    </div>
+
+    <div class="button-container">
+      <button type="button" id="toFeedback">NEXT</button>
+      <button type="button" id="tolog">LOGOUT</button>
+      <button type="button" id="tolink">UPDATE LINK</button>
+    </div>
+
+
+  </form>
+
+  <script>
+    // Academic Year Validation
+    document.getElementById("academicYear").addEventListener("input", function(e) {
+      const value = e.target.value;
+      const pattern = /^\d{4}-\d{4}$/;
+      
+      if (pattern.test(value)) {
+        const [startYear, endYear] = value.split('-').map(Number);
+        if (endYear !== startYear + 1) {
+          e.target.setCustomValidity("End year must be exactly one year after start year");
+        } else {
+          e.target.setCustomValidity("");
+        }
+      } else {
+        e.target.setCustomValidity("Please enter year in YYYY-YYYY format");
+      }
+    });
+
+    // Add Theory Teacher/Subject Pair
+    document.getElementById("add-teacher-subject").addEventListener("click", function() {
+      const container = document.getElementById("subjects-container");
+      const pairCount = container.getElementsByClassName("teacher-subject-pair").length + 1;
+      
+      const newPair = document.createElement("div");
+      newPair.className = "teacher-subject-pair";
+      
+      newPair.innerHTML = `
+        <label for="teacher${pairCount}">Teacher ${pairCount}:</label>
+        <input type="text" id="teacher${pairCount}" name="teacher" placeholder="Enter Teacher Name" required>
+        <label for="subject${pairCount}">Subject ${pairCount}:</label>
+        <input type="text" id="subject${pairCount}" name="subject" placeholder="Enter Subject Name" required>
+        <button type="button" class="remove-pair">Remove</button>
+      `;
+      
+      container.appendChild(newPair);
+      
+      newPair.querySelector('.remove-pair').addEventListener('click', function() {
+        container.removeChild(newPair);
+        reindexPairs('subjects-container', 'teacher-subject-pair', 'Teacher', 'Subject');
+      });
+    });
+
+    // Add Lab Teacher/Subject Pair
+    document.getElementById("add-lab-teacher").addEventListener("click", function() {
+      const container = document.getElementById("labs-container");
+      const pairCount = container.getElementsByClassName("lab-teacher-pair").length + 1;
+      
+      const newPair = document.createElement("div");
+      newPair.className = "lab-teacher-pair";
+      
+      newPair.innerHTML = `
+        <label for="labTeacher${pairCount}">Lab Teacher ${pairCount}:</label>
+        <input type="text" id="labTeacher${pairCount}" name="labTeacher" placeholder="Enter Lab Teacher Name" required>
+        <label for="labName${pairCount}">Lab Name ${pairCount}:</label>
+        <input type="text" id="labName${pairCount}" name="labName" placeholder="Enter Lab Name" required>
+        <button type="button" class="remove-pair">Remove</button>
+      `;
+      
+      container.appendChild(newPair);
+      
+      newPair.querySelector('.remove-pair').addEventListener('click', function() {
+        container.removeChild(newPair);
+        reindexPairs('labs-container', 'lab-teacher-pair', 'Lab Teacher', 'Lab Name');
+      });
+    });
+
+    // Reindex pairs after removing
+    function reindexPairs(containerId, className, teacherPrefix, subjectPrefix) {
+      const pairs = document.getElementById(containerId).getElementsByClassName(className);
+      for (let i = 0; i < pairs.length; i++) {
+        const labels = pairs[i].getElementsByTagName("label");
+        const inputs = pairs[i].getElementsByTagName("input");
+        
+        labels[0].setAttribute("for", `${teacherPrefix.toLowerCase().replace(' ', '')}${i+1}`);
+        labels[0].textContent = `${teacherPrefix} ${i+1}:`;
+        inputs[0].id = `${teacherPrefix.toLowerCase().replace(' ', '')}${i+1}`;
+        
+        labels[1].setAttribute("for", `${subjectPrefix.toLowerCase().replace(' ', '')}${i+1}`);
+        labels[1].textContent = `${subjectPrefix} ${i+1}:`;
+        inputs[1].id = `${subjectPrefix.toLowerCase().replace(' ', '')}${i+1}`;
+      }
+    }
+
+    // Next button event listener
+    document.getElementById("toFeedback").addEventListener("click", function() {
+      const formData = {
+        academicYear: document.getElementById("academicYear").value,
+        year: document.getElementById("year").value,
+        semester: document.getElementById("semester").value,
+        branch: document.getElementById("branch").value,
+        section: document.getElementById("section").value,
+        theoryTeachers: [],
+        labTeachers: []
+      };
+
+      // Collect theory teachers/subjects
+      const theoryPairs = document.getElementsByClassName("teacher-subject-pair");
+      for (let pair of theoryPairs) {
+        const teacher = pair.querySelector('input[name="teacher"]').value;
+        const subject = pair.querySelector('input[name="subject"]').value;
+        
+        if (!teacher || !subject) {
+          alert("Please complete all Theory Teacher and Subject details.");
+          return;
+        }
+        
+        formData.theoryTeachers.push({ teacher, subject });
+      }
+
+      // Collect lab teachers/subjects
+      const labPairs = document.getElementsByClassName("lab-teacher-pair");
+      for (let pair of labPairs) {
+        const teacher = pair.querySelector('input[name="labTeacher"]').value;
+        const subject = pair.querySelector('input[name="labName"]').value;
+        
+        if (!teacher || !subject) {
+          alert("Please complete all Lab Teacher and Lab Name details.");
+          return;
+        }
+        
+        formData.labTeachers.push({ teacher, subject });
+      }
+
+      const params = new URLSearchParams({
+        ...formData,
+        theoryTeachers: JSON.stringify(formData.theoryTeachers),
+        labTeachers: JSON.stringify(formData.labTeachers)
+      });
+
+      window.location.href = `feedbackForm.html?${params.toString()}`;
+    });
+    // Auto-set branch from session storage
+document.addEventListener('DOMContentLoaded', function() {
+    const storedBranch = sessionStorage.getItem('userBranch');
+    if (storedBranch) {
+        const branchSelect = document.getElementById('branch');
+        branchSelect.value = storedBranch;
+        // Disable the branch select to prevent changes
+        branchSelect.disabled = true;
+    }
+});
+80
+    document.getElementById("tolink").addEventListener("click", function() {
+      window.location.href = "index01.html";
+    });
+    document.getElementById("tolog").addEventListener("click", function() {
+  // Open login page in new tab
+  const newTab = window.open("index.html", "_blank");
+  
+  // Focus on the new tab
+  newTab.focus();
+  
+  // Close current tab/window
+  window.close();
+  
+  // Fallback for browsers that block window.close()
+  if (!window.closed) {
+    window.location.href = "about:blank";
+  }
+});
+  </script>
+  <script src="sc.js"></script>
+</body>
+</html>
